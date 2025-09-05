@@ -9,7 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, GraduationCap, Award } from "lucide-react";
+import { CalendarDays, GraduationCap, Award, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type Edu = {
   institution: string;
@@ -24,6 +25,7 @@ type Cert = {
   title: string;
   organization: string;
   date: string;
+  url?: string; // optional external credential link
 };
 
 const EDUCATION: Edu[] = [
@@ -49,13 +51,13 @@ const EDUCATION: Edu[] = [
 
 const CERTS: Cert[] = [
   {
-    title: "Market Basket Analysis Coding Internship",
+    title: "Market Basket Analysis — Coding Internship",
     organization: "Suven Consultants & Technology Pvt. Ltd",
     date: "Mar 2022",
   },
   {
-    title: "Advanced Software Engineering",
-    organization: "Global Teach - Forage",
+    title: "Advanced Software Engineering (Virtual Experience)",
+    organization: "Forage",
     date: "Aug 2022",
   },
   {
@@ -68,117 +70,111 @@ const CERTS: Cert[] = [
     organization: "Forage",
     date: "Jan 2023",
   },
+  // NEW: CodeChef certificate
+  {
+    title: "Learn Python Programming — Certificate of Completion",
+    organization: "CodeChef",
+    date: "10 Jul 2025",
+    url: "https://www.codechef.com/certificates/public/e8efe7f",
+  },
+  // NEW: Google Cloud Skills Boost public profile (use your link)
+  {
+    title: "Google Cloud Skills Boost — Public Profile",
+    organization: "Google Cloud Skills Boost",
+    date: "Ongoing",
+    // If this 404s, remove the trailing 'add' at the end of the URL.
+    url: "https://www.cloudskillsboost.google/public_profiles/6224939d-658b-4419-b12f-3bb7808196b7add",
+  },
 ];
 
 const Education: React.FC = () => {
   return (
     <section
       id="education"
-      className="relative py-20 sm:py-24 bg-background overflow-hidden"
+      className="relative bg-background py-16 sm:py-20"
       aria-label="Education and certifications"
     >
-      {/* Background grid (matches Hero/Skills/Projects) */}
-      <div
-        className="absolute inset-0
-        bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)]
-        bg-[size:24px_24px]"
-        aria-hidden
-      />
-      {/* Soft gradient blobs */}
-      <div
-        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-[36rem] w-[72rem]
-        rounded-[9999px] bg-[radial-gradient(closest-side,rgba(0,0,0,0.05),transparent)]"
-        aria-hidden
-      />
-      <div
-        className="absolute -right-10 top-28 w-72 h-72 bg-primary/10 rounded-full blur-3xl motion-safe:animate-pulse"
-        aria-hidden
-      />
-      <div
-        className="absolute -left-8 bottom-24 w-80 h-80 bg-accent/10 rounded-full blur-3xl motion-safe:animate-pulse motion-safe:delay-1000"
-        aria-hidden
-      />
-
+      {/* Clean background — keep meshes just for Hero */}
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
+        <div className="mx-auto max-w-5xl">
           {/* Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs sm:text-sm bg-muted/40 border-border/50 mb-4">
-              <GraduationCap className="w-4 h-4 text-primary" />
+          <div className="mb-12 text-center sm:mb-14">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/30 px-3 py-1.5 text-[11px] sm:text-xs text-foreground/85">
+              <GraduationCap className="h-4 w-4 text-primary" />
               Education & Certifications
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
               Education & Certifications
             </h2>
-            <p className="mt-3 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="mx-auto mt-2 max-w-2xl text-sm sm:text-base text-foreground/85">
               Academic foundation and continuous learning in computer science.
             </p>
           </div>
 
-          {/* Education (timeline on md+) */}
+          {/* Education timeline */}
           <div className="mb-14 sm:mb-16">
-            <div className="flex items-center gap-2 mb-6">
-              <GraduationCap className="w-6 h-6 text-accent" />
+            <div className="mb-6 flex items-center gap-2">
+              <GraduationCap className="h-6 w-6 text-primary" />
               <h3 className="text-2xl font-semibold">Education</h3>
             </div>
 
             <div className="relative md:pl-6">
-              {/* timeline line */}
+              {/* vertical line */}
               <div
-                className="hidden md:block absolute left-[10px] top-0 bottom-0 w-[2px] bg-border/70"
+                className="absolute left-[10px] top-0 hidden h-full w-[2px] bg-border/70 md:block"
                 aria-hidden
               />
               <div className="space-y-6">
                 {EDUCATION.map((edu, idx) => (
                   <div key={idx} className="relative md:pl-6">
-                    {/* timeline dot */}
+                    {/* dot */}
                     <div
-                      className="hidden md:block absolute left-0 top-8 w-5 h-5 rounded-full bg-background border-2 border-primary"
+                      className="absolute left-0 top-8 hidden h-5 w-5 rounded-full border-2 border-primary bg-background md:block"
                       aria-hidden
                     />
-                    <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 bg-card/60 backdrop-blur supports-[backdrop-filter]:bg-card/60">
-                      {/* subtle top accent line */}
-                      <div className="absolute left-0 top-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-primary/30 to-accent/30 rounded-t-xl" />
+                    <Card className="group relative rounded-2xl border border-border/60 bg-background transition-all duration-300 hover:bg-muted/20 hover:shadow-sm">
+                      <div
+                        aria-hidden
+                        className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/30 via-border to-accent/30 opacity-75"
+                      />
                       <CardHeader>
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                           <div>
-                            <CardTitle className="text-xl mb-1">
+                            <CardTitle className="mb-1 text-xl">
                               {edu.degree}
                             </CardTitle>
                             <CardDescription className="text-base font-medium text-foreground">
                               {edu.institution}
                             </CardDescription>
                           </div>
-                          <div className="flex flex-col items-start md:items-end gap-2">
+                          <div className="flex flex-col items-start gap-2 md:items-end">
                             <Badge
-                              variant="secondary"
-                              className={`w-fit ${
+                              variant="outline"
+                              className={`w-fit border ${
                                 edu.status === "Completed"
-                                  ? "bg-primary/10 text-primary border-primary/20"
-                                  : "bg-accent/10 text-accent border-accent/20"
-                              } border`}
+                                  ? "border-primary/30 bg-primary/10 text-primary"
+                                  : "border-accent/30 bg-accent/10 text-accent"
+                              }`}
                             >
                               {edu.status}
                             </Badge>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <CalendarDays className="w-4 h-4" aria-hidden />
+                            <div className="flex items-center gap-2 text-sm text-foreground/75">
+                              <CalendarDays className="h-4 w-4" aria-hidden />
                               <span>{edu.period}</span>
                             </div>
                           </div>
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm text-muted-foreground">
+                        <div className="mb-3 flex items-center justify-between">
+                          <span className="text-sm text-foreground/70">
                             CGPA
                           </span>
                           <span className="text-lg font-semibold text-accent">
                             {edu.cgpa}
                           </span>
                         </div>
-                        <p className="text-muted-foreground">
-                          {edu.description}
-                        </p>
+                        <p className="text-foreground/80">{edu.description}</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -189,42 +185,63 @@ const Education: React.FC = () => {
 
           {/* Certifications */}
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <Award className="w-6 h-6 text-accent" />
+            <div className="mb-6 flex items-center gap-2">
+              <Award className="h-6 w-6 text-primary" />
               <h3 className="text-2xl font-semibold">Certifications</h3>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               {CERTS.map((cert, idx) => (
                 <Card
                   key={idx}
-                  className="group hover:shadow-lg transition-all duration-300 border-border/50 bg-card/60 backdrop-blur supports-[backdrop-filter]:bg-card/60"
+                  className="group relative rounded-2xl border border-border/60 bg-background transition-all duration-300 hover:bg-muted/20 hover:shadow-sm"
                 >
-                  {/* subtle top accent line */}
-                  <div className="absolute left-0 top-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-primary/30 to-accent/30 rounded-t-xl" />
+                  <div
+                    aria-hidden
+                    className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/30 via-border to-accent/30 opacity-75"
+                  />
                   <CardHeader className="pb-4">
                     <CardTitle className="text-lg leading-tight">
                       {cert.title}
                     </CardTitle>
-                    <CardDescription className="font-medium">
+                    <CardDescription className="font-medium text-foreground">
                       {cert.organization}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <CalendarDays className="w-4 h-4" aria-hidden />
+                  <CardContent className="flex items-center justify-between gap-3 pt-0">
+                    <div className="flex items-center gap-2 text-sm text-foreground/75">
+                      <CalendarDays className="h-4 w-4" aria-hidden />
                       <span>{cert.date}</span>
                     </div>
+
+                    {cert.url ? (
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full"
+                        aria-label={`Open credential: ${cert.title}`}
+                      >
+                        <a
+                          href={cert.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          View credential
+                        </a>
+                      </Button>
+                    ) : null}
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </div>
 
-          {/* (Optional) quick note under certs */}
-          {/* <p className="mt-6 text-xs text-muted-foreground text-center">
-            * Full credential IDs available upon request.
-          </p> */}
+            {/* Optional footnote */}
+            {/* <p className="mt-6 text-center text-xs text-foreground/70">
+              * Full credential IDs available upon request.
+            </p> */}
+          </div>
         </div>
       </div>
     </section>

@@ -1,11 +1,11 @@
 "use client";
 
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Linkedin, Github } from "lucide-react";
-import * as React from "react";
 
-const Contact = () => {
+export default function Contact() {
   const contactInfo = [
     {
       icon: Mail,
@@ -31,90 +31,64 @@ const Contact = () => {
       value: "rishik-pendurthi",
       href: "https://www.linkedin.com/in/rishik-pendurthi/",
     },
-  ];
+  ] as const;
 
   return (
     <section
       id="contact"
-      className="relative py-20 sm:py-24 bg-background overflow-hidden"
+      className="relative bg-background py-16 sm:py-20"
       aria-label="Contact section"
     >
-      {/* Background grid */}
-      <div
-        className="absolute inset-0
-        bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)]
-        bg-[size:24px_24px]"
-        aria-hidden
-      />
-      {/* Gradient blobs */}
-      <div
-        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-[36rem] w-[72rem]
-        rounded-[9999px] bg-[radial-gradient(closest-side,rgba(0,0,0,0.05),transparent)]"
-        aria-hidden
-      />
-      <div
-        className="absolute -right-10 top-28 w-72 h-72 bg-primary/10 rounded-full blur-3xl motion-safe:animate-pulse"
-        aria-hidden
-      />
-      <div
-        className="absolute -left-8 bottom-24 w-80 h-80 bg-accent/10 rounded-full blur-3xl motion-safe:animate-pulse motion-safe:delay-1000"
-        aria-hidden
-      />
-
+      {/* Clean background (no mesh/blobs) */}
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
+        <div className="mx-auto max-w-5xl">
           {/* Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Get In Touch
+          <div className="mb-12 text-center sm:mb-14">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+              Get in touch
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Ready to contribute to innovative projects and collaborate on
-              exciting opportunities. Let&apos;s connect and discuss how we can
-              work together.
+            <p className="mx-auto mt-2 max-w-2xl text-sm sm:text-base text-foreground/85">
+              Ready to collaborate on impactful work. Reach out and let’s see
+              how we can build something great together.
             </p>
           </div>
 
           {/* Contact Grid */}
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {contactInfo.map((contact, index) => {
-              const IconComponent = contact.icon;
+          <div className="mb-12 grid gap-6 md:grid-cols-2">
+            {contactInfo.map((item, i) => {
+              const Icon = item.icon;
+              const isExternal = !!item.href && item.href.startsWith("http");
               return (
                 <Card
-                  key={index}
-                  className="group relative hover:shadow-lg transition-all duration-300 border-border/50 bg-card/60 backdrop-blur supports-[backdrop-filter]:bg-card/60 hover:-translate-y-1"
+                  key={i}
+                  className="group relative rounded-2xl border border-border/60 bg-background transition-all duration-300 hover:-translate-y-1 hover:bg-muted/20 hover:shadow-sm"
                 >
-                  {/* accent line */}
-                  <div className="absolute left-0 top-0 h-1 w-0 group-hover:w-full transition-all duration-500 bg-gradient-to-r from-primary/30 to-accent/30 rounded-t-xl" />
+                  {/* subtle top hairline */}
+                  <div
+                    aria-hidden
+                    className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/30 via-border to-accent/30 opacity-75"
+                  />
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
-                        <IconComponent className="w-6 h-6 text-accent" />
+                      <div className="rounded-xl border border-border/60 bg-muted/30 p-2.5">
+                        <Icon className="h-6 w-6 text-primary" aria-hidden />
                       </div>
                       <div className="flex-1">
-                        <div className="text-sm text-muted-foreground mb-1">
-                          {contact.label}
+                        <div className="mb-1 text-sm text-foreground/70">
+                          {item.label}
                         </div>
-                        {contact.href ? (
+                        {item.href ? (
                           <a
-                            href={contact.href}
-                            target={
-                              contact.href.startsWith("http")
-                                ? "_blank"
-                                : undefined
-                            }
-                            rel={
-                              contact.href.startsWith("http")
-                                ? "noopener noreferrer"
-                                : undefined
-                            }
-                            className="text-foreground font-medium hover:text-accent transition-colors"
+                            href={item.href}
+                            target={isExternal ? "_blank" : undefined}
+                            rel={isExternal ? "noopener noreferrer" : undefined}
+                            className="font-medium text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
                           >
-                            {contact.value}
+                            {item.value}
                           </a>
                         ) : (
-                          <div className="text-foreground font-medium">
-                            {contact.value}
+                          <div className="font-medium text-foreground">
+                            {item.value}
                           </div>
                         )}
                       </div>
@@ -125,44 +99,36 @@ const Contact = () => {
             })}
           </div>
 
-          {/* CTA */}
-          <Card className="relative bg-gradient-to-r from-primary to-accent text-primary-foreground border-0 shadow-lg">
+          {/* CTA (neutral surface with gradient accent line) */}
+          <Card className="relative rounded-2xl border border-border/60 bg-background">
+            <div
+              aria-hidden
+              className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-primary/40 via-border to-accent/40"
+            />
             <CardContent className="p-8 text-center">
-              <h3 className="text-2xl font-bold mb-4">
-                Ready to Start Something Amazing?
+              <h3 className="mb-3 text-2xl font-semibold text-foreground">
+                Ready to start something amazing?
               </h3>
-              <p className="text-primary-foreground/90 mb-6 max-w-2xl mx-auto">
-                I&apos;m currently seeking opportunities in software
-                development, data analysis, or AI-driven applications.
-                Let&apos;s discuss how my skills can contribute to your
-                team&apos;s success.
+              <p className="mx-auto mb-6 max-w-2xl text-foreground/85">
+                I’m currently seeking opportunities in software development,
+                data analysis, and AI-driven applications. Let’s talk about how
+                I can help your team ship faster and smarter.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  asChild
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/20"
-                >
+              <div className="flex flex-col justify-center gap-3 sm:flex-row">
+                <Button variant="default" size="lg" asChild>
                   <a href="mailto:rishikpendurthi136@gmail.com">
-                    <Mail className="w-4 h-4" />
-                    Send Email
+                    <Mail className="h-4 w-4" />
+                    Send email
                   </a>
                 </Button>
-
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  className="bg-transparent border-white/30 text-white hover:bg-white/10"
-                >
+                <Button variant="outline" size="lg" asChild>
                   <a
                     href="https://www.linkedin.com/in/rishik-pendurthi/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Linkedin className="w-4 h-4" />
+                    <Linkedin className="h-4 w-4" />
                     Connect on LinkedIn
                   </a>
                 </Button>
@@ -171,39 +137,41 @@ const Contact = () => {
           </Card>
 
           {/* Footer */}
-          <div className="text-center mt-12 pt-8 border-t border-border/50">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p className="text-sm text-muted-foreground">
-                © 2024 Rishik Pendurthi. Built with React & Tailwind CSS.
+          <div className="mt-12 border-t border-border/60 pt-8 text-center">
+            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+              <p className="text-sm text-foreground/70">
+                © {new Date().getFullYear()} Rishik Pendurthi. Built with React
+                & Tailwind CSS.
               </p>
-
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <Button
                   variant="ghost"
                   size="icon"
                   asChild
-                  className="hover:text-primary"
+                  className="rounded-full hover:text-primary"
+                  aria-label="Open GitHub profile"
                 >
                   <a
                     href="https://github.com/RishikPendurthi"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Github className="w-5 h-5" />
+                    <Github className="h-5 w-5" />
                   </a>
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon"
                   asChild
-                  className="hover:text-primary"
+                  className="rounded-full hover:text-primary"
+                  aria-label="Open LinkedIn profile"
                 >
                   <a
                     href="https://www.linkedin.com/in/rishik-pendurthi/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Linkedin className="w-5 h-5" />
+                    <Linkedin className="h-5 w-5" />
                   </a>
                 </Button>
               </div>
@@ -213,6 +181,4 @@ const Contact = () => {
       </div>
     </section>
   );
-};
-
-export default Contact;
+}
