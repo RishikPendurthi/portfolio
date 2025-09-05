@@ -64,6 +64,60 @@ export default function Hero() {
         aria-hidden
       />
 
+      {/* Smoke Effect */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{
+          zIndex: 1,
+        }}
+      >
+        <svg
+          className="w-full h-full opacity-20 animate-smoke"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <filter id="smokeFilter" x="0" y="0" width="100%" height="100%">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.05"
+                numOctaves="3"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="20"
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
+              <feGaussianBlur stdDeviation="3" result="blurred" />
+              <feComposite in="SourceGraphic" in2="blurred" operator="atop" />
+            </filter>
+          </defs>
+          <rect
+            width="100%"
+            height="100%"
+            fill="#ffffff33"
+            filter="url(#smokeFilter)"
+          />
+        </svg>
+        <style>
+          {`
+            @keyframes smoke {
+              0% { transform: translateY(0) scale(1); opacity: 0.2; }
+              50% { transform: translateY(-15%) scale(1.05); opacity: 0.25; }
+              100% { transform: translateY(0) scale(1); opacity: 0.2; }
+            }
+            .animate-smoke {
+              animation: smoke 10s ease-in-out infinite;
+            }
+          `}
+        </style>
+      </div>
+
       {/* Content */}
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="mx-auto max-w-6xl text-center">

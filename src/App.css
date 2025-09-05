@@ -40,3 +40,21 @@
 .read-the-docs {
   color: #888;
 }
+@keyframes smoke {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-10%) scale(1.02);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.15;
+  }
+}
+
+.animate-smoke {
+  animation: smoke 8s ease-in-out infinite;
+}

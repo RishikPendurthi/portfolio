@@ -19,12 +19,7 @@ export default function Contact() {
       value: "+1-234-296-2935",
       href: "tel:+1-234-296-2935",
     },
-    {
-      icon: MapPin,
-      label: "Location",
-      value: "Kent, Ohio",
-      href: null,
-    },
+    { icon: MapPin, label: "Location", value: "Kent, Ohio", href: null },
     {
       icon: Linkedin,
       label: "LinkedIn",
@@ -32,6 +27,44 @@ export default function Contact() {
       href: "https://www.linkedin.com/in/rishik-pendurthi/",
     },
   ] as const;
+
+  // --- Auto-updating date (refreshes at local midnight) ---
+  const [today, setToday] = React.useState<Date>(new Date());
+  const formattedDate = React.useMemo(
+    () =>
+      today.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }),
+    [today]
+  );
+
+  React.useEffect(() => {
+    const update = () => setToday(new Date());
+    const now = new Date();
+    const nextMidnight = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() + 1,
+      0,
+      0,
+      0,
+      0
+    );
+    const msUntilMidnight = nextMidnight.getTime() - now.getTime();
+
+    const timeoutId = window.setTimeout(() => {
+      update();
+      // After the first tick at midnight, update every 24h.
+      const intervalId = window.setInterval(update, 24 * 60 * 60 * 1000);
+      // Cleanup interval on unmount
+      return () => clearInterval(intervalId);
+    }, msUntilMidnight);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+  // --------------------------------------------------------
 
   return (
     <section
@@ -140,8 +173,8 @@ export default function Contact() {
           <div className="mt-12 border-t border-border/60 pt-8 text-center">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <p className="text-sm text-foreground/70">
-                © {new Date().getFullYear()} Rishik Pendurthi. Built with React
-                & Tailwind CSS.
+                © 2024–{today.getFullYear()} Rishik Pendurthi · Updated on{" "}
+                {formattedDate}
               </p>
               <div className="flex gap-2">
                 <Button
